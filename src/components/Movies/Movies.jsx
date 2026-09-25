@@ -8,9 +8,9 @@ import { MovieList, Pagination, FeaturedMovie } from '..';
 function Movies() {
   const [page, setPage] = useState(1);
   const { genreIdOrCategoryName, searchQuery } = useSelector((state) => state.currentGenreOrCategory);
-  const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page, searchQuery }); //fetching data from an API
 
   const lgDevice = useMediaQuery((theme) => theme.breakpoints.only('lg'));
+  const { data, error, isFetching } = useGetMoviesQuery({ genreIdOrCategoryName, page, searchQuery },{ pollingInterval: 60000 });
   const numberOfMoviesToShow = lgDevice ? 17 : 19; //notice: data?.results?.length === 20
 
   if (isFetching) {
