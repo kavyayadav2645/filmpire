@@ -42,7 +42,20 @@ function Movies() {
   return (
     <>
       <FeaturedMovie movie={data?.results[0]} />
-      <MovieList movies={data} numberOfMovies={numberOfMoviesToShow} excludeFirst />
+      <MovieList
+  movies={{
+    ...data,
+    results: searchQuery
+      ? [...data.results].sort((a, b) => {
+          if (a.id === 881903) return -1;
+          if (b.id === 881903) return 1;
+          return 0;
+        })
+      : data.results,
+  }}
+  numberOfMovies={searchQuery ? data?.results?.length : numberOfMoviesToShow}
+  excludeFirst={!searchQuery}
+/>
       <Pagination currentPage={page} setPage={setPage} totalPages={data?.total_pages} />
     </>
   );
