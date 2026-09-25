@@ -21,8 +21,7 @@ function MovieInformation() {
 
   /*fetching the movie information*/
   const { id } = useParams();
-  const { data, error, isFetching } = useGetMovieQuery(id);
-
+const { data, error, isFetching } = useGetMovieQuery(id,{ pollingInterval: 60000 });
   /*adding/removing the movie from the favorites/watchlist*/
   const user = useSelector(userSelector);
   const [isMovieFavorited, setIsMovieFavorited] = useState(false);
@@ -167,7 +166,18 @@ function MovieInformation() {
               <ButtonGroup size="medium" variant="outlined">
                 <Button target="_blank" rel="noopener noreferrer" href={data?.homepage} endIcon={<Language />}>Website</Button>
                 <Button target="_blank" rel="noopener noreferrer" href={`https://www.imdb.com/title/${data?.imdb_id}`} endIcon={<MovieIcon />}>IMDB</Button>
-                <Button onClick={() => setOpen(true)} endIcon={<Theaters />}>Trailer</Button>
+                <Button
+  onClick={() => {
+    if (data?.videos?.results?.length > 0) {
+      setOpen(true);
+    } else {
+      alert('Trailer not available on TMDB yet.');
+    }
+  }}
+  endIcon={<Theaters />}
+>
+  Trailer
+</Button>
               </ButtonGroup>
             </Grid>
 
